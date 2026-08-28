@@ -17,7 +17,7 @@ IPv6 启动器 (ipv6_launcher.py)
         a. 本机存在全局 IPv6 地址（排除 fe80 链路本地、::1、ULA、组播）；
         b. 连通性：ping -6 或 TCP 连接外部 IPv6 目标；
         c. 并发下载测速：多线程并发下载 IPv6 镜像，最高下载速度
-           必须 ≥ --min-speed-mbs（默认 50 MB/s）才算 IPv6 联通。
+           必须 ≥ --min-speed-mbs（默认 50 MB/s）才算 IPv6 连通。
   4. 失败自动重试，直到 IPv6 可用或达到最大尝试次数。
 
 用法示例
@@ -501,7 +501,7 @@ def main():
             speed_concurrency=args.speed_concurrency,
             speed_duration=args.speed_duration,
         )
-        log(f"检测结果: {'IPv6 联通 ✅' if ok else 'IPv6 未联通 ❌'}")
+        log(f"检测结果: {'IPv6 连通 ✅' if ok else 'IPv6 未连通 ❌'}")
         _finish(0 if ok else 1, pause)
 
     max_attempts = 1 if args.once else args.max_attempts
@@ -520,7 +520,7 @@ def main():
             speed_duration=args.speed_duration,
         )
         if ok:
-            log("✅ IPv6 联通！")
+            log("✅ IPv6 连通！")
             log(f"   全局地址: {', '.join(info['addresses'])}")
             if info["speed_mbs"]:
                 log(f"   并发下载: {info['speed_mbs']:.1f} MB/s ({info['speed_mbs'] * 8:.0f} Mbps)")
@@ -532,7 +532,7 @@ def main():
                 log("提示: 多次 renew6 失败时，可加 --reset-adapter 禁用/启用网卡更彻底")
             time.sleep(args.interval)
 
-    log("❌ 达到最大尝试次数，IPv6 仍未联通。")
+    log("❌ 达到最大尝试次数，IPv6 仍未连通。")
     log("建议: 尝试 python ipv6_launcher.py --reset-adapter --max-attempts 15")
     _finish(1, pause)
 
